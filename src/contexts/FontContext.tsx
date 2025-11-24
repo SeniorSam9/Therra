@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useContext } from "react";
+import { createContext, ReactNode, useEffect } from "react";
 import {
   useFonts as useInterFonts,
   Inter_400Regular,
@@ -9,6 +9,7 @@ import {
   NotoSansArabic_400Regular,
   NotoSansArabic_600SemiBold,
 } from "@expo-google-fonts/noto-sans-arabic";
+import * as SplashScreen from "expo-splash-screen";
 
 type FontContextType = {
   fontsLoaded: boolean;
@@ -38,6 +39,13 @@ export default function FontProvider({ children }: { children: ReactNode }) {
   });
 
   const fontsLoaded = interLoaded && notoLoaded;
+
+  useEffect(() => {
+    if (fontsLoaded) {
+      SplashScreen.hideAsync();
+    }
+  }, [fontsLoaded]);
+
   const fonts = {
     en: { regular: "Inter_400Regular", semiBold: "Inter_600SemiBold" },
     ar: {
